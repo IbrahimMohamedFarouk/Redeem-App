@@ -22,53 +22,32 @@ export default function Home() {
     const [scannedData, setScannedData] = useState(null);  // To store scanned QR code data
     const [showModal, setShowModal] = useState(false); // Modal state for input
     const [showRedeemModal, setShowRedeemModal] = useState(false);
-    const [codeInput, setCodeInput] = useState(''); // Store input code
+    // const [codeInput, setCodeInput] = useState(''); // Store input code
     const [marketName, setMarketName] = useState('');
     const [username, setUsername] = useState(''); 
     const [points, setPoints] = useState(); 
     const [marketPoints, setMarketPoints] = useState(0);
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('home');
-        const [transactions, setTransactions] = useState([
-            {
-              _id: '1',
-              date: '2025-01-01T12:30:00Z',
-              thirdParty: 'Store ABC',
-              type: 'added',
-              points: 100,
-              description: 'Points added for purchase at Store ABC',
-            },
-            {
-              _id: '2',
-              date: '2025-01-03T14:45:00Z',
-              thirdParty: 'Store XYZ',
-              type: 'deducted',
-              points: 50,
-              description: 'Points redeemed at Store XYZ',
-            },
-            {
-              _id: '3',
-              date: '2025-01-05T10:00:00Z',
-              thirdParty: 'Online Store',
-              type: 'added',
-              points: 200,
-              description: 'Points added for online purchase',
-            },
-          ]);
+        const [transactions, setTransactions] = useState([]);
     const navigation = useNavigation();
 
   useFocusEffect(
     React.useCallback(() => {
-    //   fetchMarketData();
+      fetchMarketData();
+      fetchTransactions();
+
     }, [])
   );
 
   const fetchMarketData = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get('/market');
-      const market = response.data[0];
-      setMarketName(market.name);
+      console.log('Fetching market data...');
+      const response = await axiosInstance.get('/thirdparty/thirdparty');
+      const market = response.data;
+      console.log('Market Data:', market);
+      setMarketName(market.username);
       setMarketPoints(market.points);
     } catch (error) {
       Alert.alert('Error', 'Failed to fetch market data.');
@@ -79,7 +58,7 @@ export default function Home() {
   const fetchTransactions = async () => {
     setLoading(true);
     try {
-        const data = await axiosInstance.get(`/employee/transactions/${id}`);
+        const data = await axiosInstance.get(`/thirdparty/transactions`);
 
         setTransactions(data.data);
         console.log(data.data);
@@ -99,7 +78,7 @@ const renderTransaction = ({ item }) => {
     <View style={styles.transactionCard}>
         <Text style={styles.transactionText}>Date: {formattedDate}</Text>
         <Text style={styles.transactionText}>Time: {formattedTime}</Text>
-        <Text style={styles.transactionText}>{item.thirdParty}</Text>
+        <Text style={styles.transactionText}>{item.user}</Text>
         <Text style={[styles.transactionPoints, pointsStyle]}>
             {item.type === 'added' ? `+${item.points}` : `${item.points}`} Point
         </Text>
@@ -126,14 +105,17 @@ const renderTransaction = ({ item }) => {
     ]);
   };
 
-    const handleRedeemWithCode = async () => {
+
+    const handleRedeemWithCode = async (codeInput) => {
         setLoading(true);
+        console.log('Redeeming offer with code:');
         try {
-        const response = await axiosInstance.post('/market-app/redeem-offer', {
+        const response = await axiosInstance.post('/thirdparty/redeem-offer', {
             code: codeInput,
         });
-        if (response.status === 200 && response.data.code) {
-            Alert.alert('Offer Redeemed', `Code: ${response.data.code}`);
+        console.log('Redeem Response:', response);
+        if (response.status === 200) {
+            Alert.alert('Offer Redeemed', `Code: ${response.data.message}`);
             setShowModal(false); // Close the modal after successful redemption
         } else {
             Alert.alert('Error', 'Failed to redeem offer.');
@@ -186,8 +168,8 @@ const renderTransaction = ({ item }) => {
                     {activeTab === 'home' && (
                         <>
                             <View style={styles.pointsSection}>
-                                <Text style={styles.helloText}>Hello, {username}</Text>  
-                                <Text style={styles.pointsText}>Points: {points}</Text>
+                                <Text style={styles.helloText}>{marketName}</Text>  
+                                <Text style={styles.pointsText}>Points: {marketPoints}</Text>
                             </View>
                              {/* Buttons */}
                             <View style={styles.buttonContainer}>

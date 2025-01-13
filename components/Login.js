@@ -34,7 +34,7 @@ export default function Login({ navigation }) {
             const response = await axios.post('http://192.168.1.4:3000/admin/login', {
                 username: userName,
                 password: password,
-                role: 'emp'
+                role: 'thirdparty'
             });
             // console.log('Response', response);
             console.log('Navigating to Home:', navigation.navigate);
