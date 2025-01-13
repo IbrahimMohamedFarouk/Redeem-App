@@ -22,7 +22,6 @@ export default function Home() {
     const [scannedData, setScannedData] = useState(null);  // To store scanned QR code data
     const [showModal, setShowModal] = useState(false); // Modal state for input
     const [showRedeemModal, setShowRedeemModal] = useState(false);
-    const [codeInput, setCodeInput] = useState(''); // Store input code
     const [marketName, setMarketName] = useState('');
     const [username, setUsername] = useState(''); 
     const [points, setPoints] = useState(); 
@@ -126,7 +125,7 @@ const renderTransaction = ({ item }) => {
     ]);
   };
 
-    const handleRedeemWithCode = async () => {
+    const handleRedeemWithCode = async (codeInput) => {
         setLoading(true);
         try {
         const response = await axiosInstance.post('/market-app/redeem-offer', {

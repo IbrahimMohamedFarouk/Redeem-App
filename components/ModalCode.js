@@ -12,7 +12,6 @@
         alert('Please enter a code.');
         return;
         }
-
         await onRedeem(codeInput); // Call the redeem handler passed as a prop
     };
 
