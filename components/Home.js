@@ -22,7 +22,10 @@ export default function Home() {
     const [scannedData, setScannedData] = useState(null);  // To store scanned QR code data
     const [showModal, setShowModal] = useState(false); // Modal state for input
     const [showRedeemModal, setShowRedeemModal] = useState(false);
+<<<<<<< HEAD
     // const [codeInput, setCodeInput] = useState(''); // Store input code
+=======
+>>>>>>> 42102b7846b0ac3f54eb335bd6b241f33d3a96d4
     const [marketName, setMarketName] = useState('');
     const [username, setUsername] = useState(''); 
     const [points, setPoints] = useState(); 
@@ -105,7 +108,10 @@ const renderTransaction = ({ item }) => {
     ]);
   };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 42102b7846b0ac3f54eb335bd6b241f33d3a96d4
     const handleRedeemWithCode = async (codeInput) => {
         setLoading(true);
         console.log('Redeeming offer with code:');
