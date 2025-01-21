@@ -22,11 +22,8 @@ export default function Home() {
     const [scannedData, setScannedData] = useState(null);  // To store scanned QR code data
     const [showModal, setShowModal] = useState(false); // Modal state for input
     const [showRedeemModal, setShowRedeemModal] = useState(false);
-<<<<<<< HEAD
-    // const [codeInput, setCodeInput] = useState(''); // Store input code
-=======
->>>>>>> 42102b7846b0ac3f54eb335bd6b241f33d3a96d4
     const [marketName, setMarketName] = useState('');
+    // const [codeInput, setCodeInput] = useState(''); // Store input code
     const [username, setUsername] = useState(''); 
     const [points, setPoints] = useState(); 
     const [marketPoints, setMarketPoints] = useState(0);
@@ -35,13 +32,15 @@ export default function Home() {
         const [transactions, setTransactions] = useState([]);
     const navigation = useNavigation();
 
-  useFocusEffect(
-    React.useCallback(() => {
+  useEffect(() => {
+      if (activeTab === 'home') {
       fetchMarketData();
-      fetchTransactions();
+      }
+      else if (activeTab === 'transactions') {
+        fetchTransactions();
+      }
+    }, [activeTab])
 
-    }, [])
-  );
 
   const fetchMarketData = async () => {
     setLoading(true);
@@ -108,10 +107,6 @@ const renderTransaction = ({ item }) => {
     ]);
   };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 42102b7846b0ac3f54eb335bd6b241f33d3a96d4
     const handleRedeemWithCode = async (codeInput) => {
         setLoading(true);
         console.log('Redeeming offer with code:');
@@ -185,12 +180,12 @@ const renderTransaction = ({ item }) => {
                                 >
                                 <Text style={styles.buttonText}>Redeem Offer by Code</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity
+                                {/* <TouchableOpacity
                                     style={styles.redeemButton}
                                     onPress={() => setShowRedeemModal(true)} // Open modal to input phone number and points
                                 >
                                     <Text style={styles.buttonText}>Redeem Offer Without Code</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
                             
                         </>
