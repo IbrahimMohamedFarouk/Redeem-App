@@ -7,13 +7,14 @@
     const ModalCode = ({ visible, onClose, onRedeem, loading }) => {
     const [codeInput, setCodeInput] = useState('');
 
-    const handleRedeemWithCode = async () => {
-        if (codeInput.trim() === '') {
-        alert('Please enter a code.');
-        return;
-        }
-        await onRedeem(codeInput); // Call the redeem handler passed as a prop
-    };
+        const handleRedeemWithCode = async () => {
+            if (codeInput.trim() === '') {
+            alert('Please enter a code.');
+            return;
+            }
+
+            await onRedeem(codeInput); // Call the redeem handler passed as a prop
+        };
 
     return (
         <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
